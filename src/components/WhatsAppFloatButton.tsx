@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function WhatsAppFloatButton() {
   const [isVisible, setIsVisible] = useState(false);
-  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919900000000';
+  const phoneNumber = '919703052522';
 
   useEffect(() => {
     // Small delay before showing so it doesn't pop instantly on load

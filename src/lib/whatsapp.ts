@@ -7,11 +7,7 @@ export interface CustomerDetails {
 }
 
 export function generateWhatsAppOrderLink(items: CartItem[], subtotal: number, customer: CustomerDetails): string {
-  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
-  
-  if (!phoneNumber) {
-    console.error("WhatsApp number is not configured in environment variables.");
-  }
+  const phoneNumber = '919703052522';
 
   const header = "🎉 *New Order from Website!* 🎉\n\n";
   
