@@ -17,7 +17,10 @@ import {
   Check, 
   AlertCircle,
   Database,
-  ArrowLeft
+  ArrowLeft,
+  Lock,
+  Mail,
+  LogOut
 } from 'lucide-react';
 import { getOrders, updateOrderStatus, getProducts, updateProduct, DBOrder, supabase } from '../../lib/supabase';
 import { Product, ProductCategory, CATEGORIES } from '../../data/products';
@@ -42,16 +45,113 @@ export default function AdminDashboard() {
   const [editPrice, setEditPrice] = useState<Record<string, number>>({});
   const [submitting, setSubmitting] = useState(false);
 
-  // Check Supabase configuration on mount
+  // Auth States
+  const [user, setUser] = useState<any>(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
+
+  // Check Supabase configuration and auth on mount
   useEffect(() => {
     if (!supabase) {
       setIsConfigured(false);
+      setCheckingAuth(false);
       setLoading(false);
       return;
     }
     
-    loadData();
+    checkUser();
+
+    // Listen to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        verifyAdmin(session.user);
+      } else {
+        setUser(null);
+        setCheckingAuth(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  async function checkUser() {
+    setCheckingAuth(true);
+    try {
+      const { data: { user: currentUser } } = await supabase!.auth.getUser();
+      if (currentUser) {
+        await verifyAdmin(currentUser);
+      } else {
+        setUser(null);
+        setCheckingAuth(false);
+      }
+    } catch (err) {
+      console.error("Auth check failed:", err);
+      setCheckingAuth(false);
+    }
+  }
+
+  async function verifyAdmin(currUser: any) {
+    try {
+      const { data, error } = await supabase!
+        .from('sri_durga_admins')
+        .select('email')
+        .eq('email', currUser.email)
+        .single();
+        
+      if (error || !data) {
+        setAuthError("Access Denied: You are not authorized as an admin for Sri Durga Sweets & Bakery.");
+        await supabase!.auth.signOut();
+        setUser(null);
+      } else {
+        setUser(currUser);
+        setAuthError('');
+        loadData();
+      }
+    } catch (err) {
+      setAuthError("Authorization verification failed.");
+      await supabase!.auth.signOut();
+      setUser(null);
+    } finally {
+      setCheckingAuth(false);
+    }
+  }
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError('');
+    
+    try {
+      const { data, error } = await supabase!.auth.signInWithPassword({
+        email: authEmail,
+        password: authPassword
+      });
+      
+      if (error) {
+        setAuthError(error.message);
+        setAuthLoading(false);
+        return;
+      }
+      
+      if (data.user) {
+        await verifyAdmin(data.user);
+      }
+    } catch (err: any) {
+      setAuthError(err.message || "Login failed");
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    setLoading(true);
+    await supabase!.auth.signOut();
+    setUser(null);
+    setOrders([]);
+    setProducts([]);
+  };
 
   async function loadData() {
     setLoading(true);
@@ -176,13 +276,88 @@ export default function AdminDashboard() {
     );
   }
 
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-slate-500">
+        <div className="w-12 h-12 border-4 border-brand-tan border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="font-semibold text-sm">Verifying administration permissions...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-brand-cream/20 flex flex-col items-center justify-center p-4 sm:p-6 text-brand-brown">
+        <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-brand-brown/10">
+          <div className="text-center mb-8">
+            <h2 className="font-serif text-3xl font-bold text-brand-brown">Admin Portal</h2>
+            <p className="text-sm text-brand-brown/60 mt-1">Sri Durga Sweets & Bakery</p>
+          </div>
+          
+          {authError && (
+            <div className="bg-red-50 text-red-700 text-xs font-semibold p-4 rounded-xl border border-red-100 flex items-start gap-2.5 mb-6">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-bold text-brand-brown/60 uppercase tracking-wider">Email Address</label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-brand-brown/40" />
+                <input 
+                  type="email"
+                  required
+                  placeholder="admin@sridurgasweets.com"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-brand-brown/20 focus:outline-none focus:ring-2 focus:ring-brand-tan bg-white text-brand-brown placeholder:text-brand-brown/40 text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-bold text-brand-brown/60 uppercase tracking-wider">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-brand-brown/40" />
+                <input 
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-brand-brown/20 focus:outline-none focus:ring-2 focus:ring-brand-tan bg-white text-brand-brown placeholder:text-brand-brown/40 text-sm"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={authLoading}
+              className="w-full py-3.5 bg-brand-tan hover:bg-[#b07848] disabled:opacity-50 text-white rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center mt-6 text-sm"
+            >
+              {authLoading ? 'Verifying...' : 'Sign In to Dashboard'}
+            </button>
+          </form>
+          
+          <div className="text-center mt-6">
+            <Link href="/" className="inline-flex items-center text-xs font-semibold text-brand-brown/50 hover:text-brand-brown transition-colors">
+              <ArrowLeft className="w-3.5 h-3.5 mr-1" /> Return to Storefront
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
       
       {/* Admin Navbar */}
       <header className="sticky top-0 z-30 bg-slate-900 text-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 font-sans">
             <div className="flex items-center space-x-3">
               <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-brand-tan transition-colors">
                 Sri Durga Sweets and Bakery
@@ -212,6 +387,20 @@ export default function AdminDashboard() {
                 Products
               </button>
             </nav>
+
+            <div className="flex items-center space-x-4">
+              <div className="hidden lg:block text-right">
+                <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Signed In As</div>
+                <div className="text-xs text-brand-tan font-bold truncate max-w-[120px]">{user.email}</div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-slate-800 transition-all flex items-center gap-1.5 text-xs font-bold"
+                title="Log Out"
+              >
+                <LogOut className="w-4 h-4" /> <span className="hidden md:inline">Log Out</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>

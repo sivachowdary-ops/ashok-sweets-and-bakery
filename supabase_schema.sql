@@ -48,3 +48,17 @@ create policy "Allow all access to orders for authenticated users" on public.sri
 
 -- Enable realtime for tracking orders
 alter publication supabase_realtime add table public.sri_durga_orders;
+
+-- Create Sri Durga Admins Table
+create table if not exists public.sri_durga_admins (
+    email text primary key,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable Row Level Security (RLS) for admins table
+alter table public.sri_durga_admins enable row level security;
+
+-- Policy: Authenticated users can read the table to verify membership
+create policy "Allow authenticated users to read admins" on public.sri_durga_admins
+    for select using (auth.role() = 'authenticated');
+
