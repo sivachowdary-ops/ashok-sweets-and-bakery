@@ -13,7 +13,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "Ashok Sweets and Bakery",
+  title: "Sri Durga Sweets and Bakery",
   description: "Freshly baked cakes, breads, and puffs. Order via WhatsApp.",
 };
 

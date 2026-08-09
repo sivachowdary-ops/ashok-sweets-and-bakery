@@ -6,7 +6,7 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "About Us | Ashok Sweets and Bakery",
+  title: "About Us | Sri Durga Sweets and Bakery",
   description: "Learn about our artisanal bakery story, where passion meets tradition in crafting the finest cakes and authentic sweets.",
 };
 
@@ -22,7 +22,7 @@ export default function AboutPage() {
             <div className="relative aspect-square w-full max-w-sm mx-auto md:mx-0 rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="/images/hero_bakery_spread.webp"
-                alt="Inside Ashok Sweets and Bakery"
+                alt="Inside Sri Durga Sweets and Bakery"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -36,7 +36,7 @@ export default function AboutPage() {
               
               <div className="space-y-4 text-base md:text-lg text-brand-brown/80 leading-relaxed font-light">
                 <p>
-                  Welcome to Ashok Sweets and Bakery. We started with a simple belief: the best moments in life are celebrated with something sweet, baked fresh from the oven.
+                  Welcome to Sri Durga Sweets and Bakery. We started with a simple belief: the best moments in life are celebrated with something sweet, baked fresh from the oven.
                 </p>
                 <p>
                   Combining traditional techniques with the finest ingredients, every item we create—from butter cakes to warm puffs—is crafted with care. No shortcuts, just fresh, daily baking.

@@ -7,8 +7,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Contact Us | Ashok Sweets and Bakery",
-  description: "Get in touch with Ashok Sweets and Bakery. Visit our store, call us, or send a WhatsApp message to place an order.",
+  title: "Contact Us | Sri Durga Sweets and Bakery",
+  description: "Get in touch with Sri Durga Sweets and Bakery. Visit our store, call us, or send a WhatsApp message to place an order.",
 };
 
 export default function ContactPage() {
@@ -70,7 +70,7 @@ export default function ContactPage() {
                 <h3 className="font-bold text-brand-brown mb-4">Follow us for updates</h3>
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-brand-tan hover:text-[#b07848] font-medium transition-colors">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                  @ashoksweetsandbakery
+                  @sridurgasweetsandbakery
                 </a>
               </div>
             </div>

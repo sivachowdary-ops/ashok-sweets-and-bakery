@@ -1,4 +1,5 @@
 export type PriceByWeight = {
+  quarter_kg?: number;
   half_kg?: number;
   one_kg?: number;
   unit?: number;
@@ -36,6 +37,19 @@ export const products: Product[] = [
   { id: 'pc-blackforest', name: 'Black Forest Pastry Cake', category: 'pastry-cakes', price: { half_kg: 400, one_kg: 800 }, image: '/images/products/pc-blackforest.webp' },
   { id: 'pc-honeyalmond', name: 'Honey Almond Pastry Cake', category: 'pastry-cakes', price: { half_kg: 400, one_kg: 800 }, image: '/images/products/pc-honeyalmond.webp' },
   
+  // Sweets
+  { id: 'sw-kova', name: 'Kova Items', category: 'sweets', price: { quarter_kg: 100, half_kg: 200, one_kg: 400 }, image: '/images/products/sw-kova.webp', featured: true },
+  { id: 'sw-kalakandha', name: 'Kalakandha', category: 'sweets', price: { quarter_kg: 120, half_kg: 220, one_kg: 440 }, image: '/images/products/sw-kalakandha.webp', featured: true },
+  { id: 'sw-mysorepak', name: 'Ghee Mysorepak', category: 'sweets', price: { quarter_kg: 120, half_kg: 220, one_kg: 440 }, image: '/images/products/sw-mysorepak.webp', featured: true },
+  { id: 'sw-icecreamburfi', name: 'Ice cream burfi', category: 'sweets', price: { quarter_kg: 120, half_kg: 220, one_kg: 440 }, image: '/images/products/sw-icecreamburfi.webp' },
+  { id: 'sw-sunnonda', name: 'Sunnonda', category: 'sweets', price: { quarter_kg: 100, half_kg: 200, one_kg: 400 }, image: '/images/products/sw-sunnonda.webp' },
+  { id: 'sw-besaraladdu', name: 'Besara laddu', category: 'sweets', price: { quarter_kg: 90, half_kg: 180, one_kg: 360 }, image: '/images/products/sw-besaraladdu.webp' },
+  { id: 'sw-thokkuduladdu', name: 'Thokkudu laddu', category: 'sweets', price: { quarter_kg: 60, half_kg: 120, one_kg: 240 }, image: '/images/products/sw-thokkuduladdu.webp' },
+  { id: 'sw-mothichurladdu', name: 'Mothi chur laddu', category: 'sweets', price: { quarter_kg: 70, half_kg: 140, one_kg: 280 }, image: '/images/products/sw-mothichurladdu.webp', featured: true },
+  { id: 'sw-laddu', name: 'Laddu', category: 'sweets', price: { quarter_kg: 60, half_kg: 120, one_kg: 240 }, image: '/images/products/sw-laddu.webp' },
+  { id: 'sw-kaja', name: 'Kaja', category: 'sweets', price: { quarter_kg: 60, half_kg: 120, one_kg: 240 }, image: '/images/products/sw-kaja.webp' },
+  { id: 'sw-jangiri', name: 'Jangiri', category: 'sweets', price: { quarter_kg: 60, half_kg: 120, one_kg: 240 }, image: '/images/products/sw-jangiri.webp' },
+
   // Breads
   { id: 'br-milk', name: 'Milk Bread', category: 'breads', price: { unit: 50 }, image: '/images/products/br-milk.webp', featured: true },
   { id: 'br-brown', name: 'Brown Bread', category: 'breads', price: { unit: 70 }, image: '/images/products/br-brown.webp', featured: true },
@@ -50,7 +64,7 @@ export const products: Product[] = [
 export const CATEGORIES = [
   { id: 'butter-cakes', label: 'Butter Cakes', image: '/images/products/bc-vanilla.webp' },
   { id: 'pastry-cakes', label: 'Pastry Cakes', image: '/images/products/pc-strawberry.webp' },
-  { id: 'sweets', label: 'Sweets', image: '' },
+  { id: 'sweets', label: 'Sweets', image: '/images/category_sweets.webp' },
   { id: 'breads', label: 'Breads', image: '/images/products/br-milk.webp' },
   { id: 'puffs', label: 'Puffs', image: '/images/products/pf-veg.webp' },
 ];

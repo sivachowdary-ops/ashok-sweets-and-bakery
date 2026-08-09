@@ -8,16 +8,24 @@ import { ArrowRight, ShoppingBag, MessageCircle, CheckCircle2, Search } from 'lu
 import CategoryTile from '../components/CategoryTile';
 import ProductCard from '../components/ProductCard';
 import FAQAccordion from '../components/FAQAccordion';
-import { CATEGORIES, products } from '../data/products';
+import { CATEGORIES, products as localProducts } from '../data/products';
+import { getProducts } from '../lib/supabase';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Ashok Sweets and Bakery | Order Online",
+  title: "Sri Durga Sweets and Bakery | Order Online",
   description: "Bite into Happiness! Order freshly baked artisanal cakes, breads, and authentic sweets delivered locally. Reach out via WhatsApp.",
 };
 
-export default function Home() {
-  const featuredProducts = products.filter(p => p.featured).slice(0, 8);
+export default async function Home() {
+  let dbProducts = [];
+  try {
+    dbProducts = await getProducts();
+  } catch (err) {
+    console.error("Failed to fetch products on home page:", err);
+    dbProducts = localProducts;
+  }
+  const featuredProducts = dbProducts.filter(p => p.featured).slice(0, 8);
   
   return (
     <>

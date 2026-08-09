@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           
           <div className="col-span-1 md:col-span-1">
-            <h2 className="font-serif text-2xl font-bold mb-4">Ashok Sweets and Bakery</h2>
+            <h2 className="font-serif text-2xl font-bold mb-4">Sri Durga Sweets and Bakery</h2>
             <p className="text-brand-cream/80 text-sm mb-6 leading-relaxed">
               Freshly baked with love. Discover our range of artisanal cakes, breads, puffs, and traditional sweets.
             </p>
@@ -59,7 +59,7 @@ export default function Footer() {
         </div>
         
         <div className="pt-8 border-t border-brand-cream/10 text-center text-xs text-brand-cream/60">
-          <p>&copy; {new Date().getFullYear()} Ashok Sweets and Bakery. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Sri Durga Sweets and Bakery. All rights reserved.</p>
         </div>
       </div>
     </footer>

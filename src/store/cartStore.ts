@@ -5,15 +5,15 @@ import { Product } from '../data/products';
 export type CartItem = {
   product: Product;
   quantity: number;
-  selectedWeight: 'half_kg' | 'one_kg' | 'unit';
+  selectedWeight: 'quarter_kg' | 'half_kg' | 'one_kg' | 'unit';
   priceAtSelection: number;
 };
 
 interface CartState {
   items: CartItem[];
-  addItem: (product: Product, quantity: number, weight: 'half_kg' | 'one_kg' | 'unit') => void;
-  removeItem: (productId: string, weight: 'half_kg' | 'one_kg' | 'unit') => void;
-  updateQuantity: (productId: string, weight: 'half_kg' | 'one_kg' | 'unit', quantity: number) => void;
+  addItem: (product: Product, quantity: number, weight: 'quarter_kg' | 'half_kg' | 'one_kg' | 'unit') => void;
+  removeItem: (productId: string, weight: 'quarter_kg' | 'half_kg' | 'one_kg' | 'unit') => void;
+  updateQuantity: (productId: string, weight: 'quarter_kg' | 'half_kg' | 'one_kg' | 'unit', quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getSubtotal: () => number;

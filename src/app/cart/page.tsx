@@ -6,14 +6,15 @@ import WhatsAppFloatButton from '../../components/WhatsAppFloatButton';
 import FloatingCartButton from '../../components/FloatingCartButton';
 import EmptyState from '../../components/EmptyState';
 import { useCartStore } from '../../store/cartStore';
-import { generateWhatsAppOrderLink } from '../../lib/whatsapp';
+import { generateWhatsAppOrderLink, generateWhatsAppMessage } from '../../lib/whatsapp';
+import { createOrder } from '../../lib/supabase';
 import { Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, getSubtotal } = useCartStore();
+  const { items, updateQuantity, removeItem, getSubtotal, clearCart } = useCartStore();
   const [mounted, setMounted] = useState(false);
   const [isCheckout, setIsCheckout] = useState(false);
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '' });
@@ -26,9 +27,33 @@ export default function CartPage() {
 
   const subtotal = getSubtotal();
 
-  const handleWhatsAppOrder = () => {
+  const handleWhatsAppOrder = async () => {
     if (!customer.name || !customer.phone || !customer.address) return;
+    
     const link = generateWhatsAppOrderLink(items, subtotal, customer);
+    const rawMessage = generateWhatsAppMessage(items, subtotal, customer);
+    const dbItems = items.map(item => ({
+      product_id: item.product.id,
+      product_name: item.product.name,
+      quantity: item.quantity,
+      selected_weight: item.selectedWeight,
+      price_at_selection: item.priceAtSelection
+    }));
+
+    try {
+      await createOrder({
+        customer_name: customer.name,
+        customer_phone: customer.phone,
+        customer_address: customer.address,
+        items: dbItems,
+        subtotal: subtotal,
+        whatsapp_message: rawMessage
+      });
+      clearCart();
+    } catch (err) {
+      console.error("Failed to save order to database:", err);
+    }
+    
     window.open(link, '_blank');
   };
 

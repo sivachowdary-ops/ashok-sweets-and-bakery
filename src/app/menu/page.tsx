@@ -1,21 +1,38 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import WhatsAppFloatButton from '../../components/WhatsAppFloatButton';
 import FloatingCartButton from '../../components/FloatingCartButton';
 import ProductCard from '../../components/ProductCard';
 import EmptyState from '../../components/EmptyState';
-import { CATEGORIES, products, ProductCategory } from '../../data/products';
+import { CATEGORIES, products as localProducts, ProductCategory, Product } from '../../data/products';
+import { getProducts } from '../../lib/supabase';
 
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState<ProductCategory | 'all'>('all');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getProducts()
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load products from database, using local fallback:", err);
+        setProducts(localProducts);
+        setLoading(false);
+      });
+  }, []);
 
   const filteredProducts = useMemo(() => {
-    if (activeCategory === 'all') return products;
-    return products.filter(p => p.category === activeCategory);
-  }, [activeCategory]);
+    const list = products.length > 0 ? products : localProducts;
+    if (activeCategory === 'all') return list;
+    return list.filter(p => p.category === activeCategory);
+  }, [activeCategory, products]);
 
   return (
     <>

@@ -22,7 +22,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="font-serif text-2xl font-bold text-brand-brown tracking-tight">
-              Ashok Sweets and Bakery
+              Sri Durga Sweets and Bakery
             </Link>
           </div>
 
