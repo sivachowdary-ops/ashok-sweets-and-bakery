@@ -27,7 +27,7 @@ export async function createOrder(order: Omit<DBOrder, 'status'>) {
   }
 
   const { data, error } = await supabase
-    .from('orders')
+    .from('sri_durga_orders')
     .insert([
       {
         customer_name: order.customer_name,
@@ -57,7 +57,7 @@ export async function getOrders(): Promise<DBOrder[]> {
   }
 
   const { data, error } = await supabase
-    .from('orders')
+    .from('sri_durga_orders')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -73,7 +73,7 @@ export async function updateOrderStatus(orderId: string, status: DBOrder['status
   if (!supabase) return null;
 
   const { data, error } = await supabase
-    .from('orders')
+    .from('sri_durga_orders')
     .update({ status })
     .eq('id', orderId)
     .select()
@@ -94,7 +94,7 @@ export async function getProducts(): Promise<Product[]> {
   }
 
   const { data, error } = await supabase
-    .from('products')
+    .from('sri_durga_products')
     .select('*')
     .order('category')
     .order('name');
@@ -118,7 +118,7 @@ export async function getProducts(): Promise<Product[]> {
     }));
 
     const { error: seedError } = await supabase
-      .from('products')
+      .from('sri_durga_products')
       .insert(seedData);
 
     if (seedError) {
@@ -146,7 +146,7 @@ export async function updateProduct(productId: string, updates: Partial<Product>
   }
 
   const { data, error } = await supabase
-    .from('products')
+    .from('sri_durga_products')
     .update(updates)
     .eq('id', productId)
     .select()

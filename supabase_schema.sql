@@ -4,7 +4,7 @@
 create extension if not exists "uuid-ossp";
 
 -- Create Products Table
-create table if not exists public.products (
+create table if not exists public.sri_durga_products (
     id text primary key,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     name text not null,
@@ -16,7 +16,7 @@ create table if not exists public.products (
 );
 
 -- Create Orders Table
-create table if not exists public.orders (
+create table if not exists public.sri_durga_orders (
     id uuid default gen_random_uuid() primary key,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     customer_name text not null,
@@ -29,22 +29,22 @@ create table if not exists public.orders (
 );
 
 -- Enable Row Level Security (RLS)
-alter table public.products enable row level security;
-alter table public.orders enable row level security;
+alter table public.sri_durga_products enable row level security;
+alter table public.sri_durga_orders enable row level security;
 
 -- Create Policies for Products (Anyone can read, Admin can write)
-create policy "Allow public read access to products" on public.products
+create policy "Allow public read access to products" on public.sri_durga_products
     for select using (true);
 
-create policy "Allow all access to products for authenticated users" on public.products
+create policy "Allow all access to products for authenticated users" on public.sri_durga_products
     for all using (true) with check (true); -- In a simple setup, allow all access. For production, restrict to admin.
 
 -- Create Policies for Orders (Public can create, Authenticated/Admin can read/write)
-create policy "Allow public to insert orders" on public.orders
+create policy "Allow public to insert orders" on public.sri_durga_orders
     for insert with check (true);
 
-create policy "Allow all access to orders for authenticated users" on public.orders
+create policy "Allow all access to orders for authenticated users" on public.sri_durga_orders
     for all using (true) with check (true);
 
 -- Enable realtime for tracking orders
-alter publication supabase_realtime add table public.orders;
+alter publication supabase_realtime add table public.sri_durga_orders;
