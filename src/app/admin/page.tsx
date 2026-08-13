@@ -359,8 +359,9 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 font-sans">
             <div className="flex items-center space-x-3">
-              <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-brand-tan transition-colors">
-                Sri Durga Sweets and Bakery
+              <Link href="/" className="font-serif text-base min-[480px]:text-lg sm:text-xl font-bold tracking-tight hover:text-brand-tan transition-colors select-none">
+                <span className="inline min-[480px]:hidden">Sri Durga Sweets</span>
+                <span className="hidden min-[480px]:inline">Sri Durga Sweets and Bakery</span>
               </Link>
               <span className="bg-slate-800 text-slate-400 text-xs px-2.5 py-1 rounded-md font-semibold tracking-wider uppercase border border-slate-700">
                 Admin

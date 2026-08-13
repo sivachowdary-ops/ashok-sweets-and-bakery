@@ -21,8 +21,9 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="font-serif text-2xl font-bold text-brand-brown tracking-tight">
-              Sri Durga Sweets and Bakery
+            <Link href="/" className="font-serif text-lg min-[480px]:text-xl sm:text-2xl font-bold text-brand-brown tracking-tight select-none">
+              <span className="inline min-[480px]:hidden">Sri Durga Sweets</span>
+              <span className="hidden min-[480px]:inline">Sri Durga Sweets and Bakery</span>
             </Link>
           </div>
 
