@@ -25,7 +25,13 @@ export default async function Home() {
     console.error("Failed to fetch products on home page:", err);
     dbProducts = localProducts;
   }
-  const featuredProducts = dbProducts.filter(p => p.featured).slice(0, 8);
+  
+  // Sort featured products so 'sweets' category is prioritized first, showing up to 12 items
+  const categoryPriority = ['sweets', 'butter-cakes', 'pastry-cakes', 'puffs', 'breads'];
+  const featuredProducts = dbProducts
+    .filter(p => p.featured)
+    .sort((a, b) => categoryPriority.indexOf(a.category) - categoryPriority.indexOf(b.category))
+    .slice(0, 12);
   
   return (
     <>
